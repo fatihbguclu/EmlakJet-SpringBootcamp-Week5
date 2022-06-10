@@ -3,6 +3,7 @@ package com.patika.api.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
@@ -10,7 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = -8577024754630506425L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

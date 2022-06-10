@@ -2,6 +2,7 @@ package com.patika.api.controller;
 
 import com.patika.api.domain.SaleAdvertisement;
 import com.patika.api.domain.User;
+import com.patika.api.producer.MessageProducerService;
 import com.patika.api.repository.AdvertRepository;
 import com.patika.api.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +15,12 @@ public class AdvertController {
 
     private final AdvertRepository advertRepository;
     private final UserRepository userRepository;
+    private final MessageProducerService messageProducerService;
 
-    public AdvertController(AdvertRepository advertRepository, UserRepository userRepository) {
+    public AdvertController(AdvertRepository advertRepository, UserRepository userRepository, MessageProducerService messageProducerService) {
         this.advertRepository = advertRepository;
         this.userRepository = userRepository;
+        this.messageProducerService = messageProducerService;
     }
 
     @GetMapping("/adverts/{userId}")
@@ -40,8 +43,14 @@ public class AdvertController {
                              @PathVariable String userId){
         User user = userRepository.getById(Long.valueOf(userId));
         advertisement.setUser(user);
+        SaleAdvertisement savedAdvert =  advertRepository.save(advertisement);
 
-        advertRepository.save(advertisement);
+
+
+        System.out.println(savedAdvert);
+
+
+        messageProducerService.sendMessage(savedAdvert);
     }
 
 }
