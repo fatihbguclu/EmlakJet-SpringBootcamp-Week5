@@ -1,6 +1,7 @@
 package com.patika.api.producer;
 
 
+
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -8,41 +9,47 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MessagingConfig {
+    @Value("${queue.name}")
+    private String message;
 
-    private final String queueName = "buffer";
-    private final String exchangeName = "exchange";
-    private final String routingKey = "advert";
+    @Value("${spring.rabbitmq.template.exchange}")
+    private String exchangeName;
+
+    @Value("${spring.rabbitmq.template.routing-key}")
+    private String routingName;
 
     @Bean
-    Queue queue(){
-        return new Queue(queueName,false);
+    public Queue queue() {
+        return new Queue(message, true);
     }
 
     @Bean
-    DirectExchange directExchange() {
+    DirectExchange directExchange(){
         return new DirectExchange(exchangeName);
     }
 
     @Bean
     Binding binding(Queue queue, DirectExchange directExchange){
-        return BindingBuilder.bind(queue).to(directExchange).with(routingKey);
+        return BindingBuilder.bind(queue).to(directExchange).with(routingName);
     }
 
     @Bean
-    public Jackson2JsonMessageConverter messageConverter(){
+    MessageConverter messageConverter() {
+
         return new Jackson2JsonMessageConverter();
     }
 
     @Bean
-    RabbitTemplate rabbitTemplate( ConnectionFactory factory) {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(factory);
+    RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(messageConverter());
         return rabbitTemplate;
     }
-
 }
