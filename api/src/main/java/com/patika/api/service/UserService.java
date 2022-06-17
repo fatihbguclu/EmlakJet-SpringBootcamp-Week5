@@ -7,7 +7,7 @@ import java.util.List;
 
 @Service
 public interface UserService {
-    void createUser(User user);
+    String createUser(User user);
 
     User getById(Long valueOf);
 

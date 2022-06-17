@@ -4,9 +4,11 @@ import com.patika.api.domain.SaleAdvertisement;
 import com.patika.api.domain.User;
 import com.patika.api.repository.AdvertRepository;
 import com.patika.api.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AdvertServiceImpl implements AdvertService{
 
     private final UserRepository userRepository;

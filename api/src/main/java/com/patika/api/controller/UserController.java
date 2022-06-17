@@ -14,7 +14,7 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserRepository userRepository, UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -31,9 +31,10 @@ public class UserController {
         return string;
     }
 
-    @PostMapping()
-    public void createUser(@RequestBody User user){
-        userService.createUser(user);
+    @GetMapping("/test")
+    public String createUser(){
+        User user = null;
+        return userService.createUser(user);
     }
 
 }

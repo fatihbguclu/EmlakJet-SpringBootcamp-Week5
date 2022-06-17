@@ -25,4 +25,12 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user")
     private List<SaleAdvertisement> advertisementList;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", mail='" + mail + '\'' +
+                '}';
+    }
 }

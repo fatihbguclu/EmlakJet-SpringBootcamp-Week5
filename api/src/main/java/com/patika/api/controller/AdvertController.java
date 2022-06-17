@@ -13,13 +13,10 @@ import java.util.List;
 //@RequestMapping(name = "/adverts")
 public class AdvertController {
 
-    private final MessageProducerService messageProducerService;
     private final AdvertService advertService;
     private final UserService userService;
 
-    public AdvertController(MessageProducerService messageProducerService, AdvertService advertService,
-                            UserService userService) {
-        this.messageProducerService = messageProducerService;
+    public AdvertController(AdvertService advertService, UserService userService) {
         this.advertService = advertService;
         this.userService = userService;
     }
@@ -38,8 +35,6 @@ public class AdvertController {
     public void createAdvert(@RequestBody SaleAdvertisement advertisement,
                              @PathVariable String userId){
         SaleAdvertisement savedAdvert =  advertService.createAdvert(advertisement, Long.valueOf(userId));
-
-        messageProducerService.sendMessage(savedAdvert);
     }
 
 }
