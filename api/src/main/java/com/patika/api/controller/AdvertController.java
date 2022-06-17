@@ -3,8 +3,8 @@ package com.patika.api.controller;
 import com.patika.api.domain.SaleAdvertisement;
 import com.patika.api.domain.User;
 import com.patika.api.producer.MessageProducerService;
-import com.patika.api.repository.AdvertRepository;
-import com.patika.api.repository.UserRepository;
+import com.patika.api.service.AdvertService;
+import com.patika.api.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,42 +13,31 @@ import java.util.List;
 //@RequestMapping(name = "/adverts")
 public class AdvertController {
 
-    private final AdvertRepository advertRepository;
-    private final UserRepository userRepository;
     private final MessageProducerService messageProducerService;
+    private final AdvertService advertService;
+    private final UserService userService;
 
-    public AdvertController(AdvertRepository advertRepository, UserRepository userRepository, MessageProducerService messageProducerService) {
-        this.advertRepository = advertRepository;
-        this.userRepository = userRepository;
+    public AdvertController(MessageProducerService messageProducerService, AdvertService advertService,
+                            UserService userService) {
         this.messageProducerService = messageProducerService;
+        this.advertService = advertService;
+        this.userService = userService;
     }
 
     @GetMapping("/adverts/{userId}")
     public String getAdvertsByUserId(@PathVariable String userId){
-        User user = userRepository.getById(Long.valueOf(userId));
-        System.out.println(user.getName());
-        List<SaleAdvertisement> advertisementList = advertRepository.getAllByUser(user);
+        List<SaleAdvertisement> advertisementList = advertService.getAllByUser(Long.valueOf(userId));
         String str = "";
-
         for(SaleAdvertisement advertisement: advertisementList){
             str += "<br>" + advertisement.getUser().getName() + "<br>" + advertisement.toString();
         }
-
-
         return str;
     }
 
     @PostMapping("/adverts/{userId}")
     public void createAdvert(@RequestBody SaleAdvertisement advertisement,
                              @PathVariable String userId){
-        User user = userRepository.getById(Long.valueOf(userId));
-        advertisement.setUser(user);
-        SaleAdvertisement savedAdvert =  advertRepository.save(advertisement);
-
-
-
-        System.out.println(savedAdvert);
-
+        SaleAdvertisement savedAdvert =  advertService.createAdvert(advertisement, Long.valueOf(userId));
 
         messageProducerService.sendMessage(savedAdvert);
     }
