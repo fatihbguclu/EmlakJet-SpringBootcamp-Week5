@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String createUser(User user) {
+    public void createRandomUser() {
 
         String jsonString = webClient.get()
                 .uri("")
@@ -47,7 +47,6 @@ public class UserServiceImpl implements UserService{
                 newUser.setMail(object.getString("email"));
                 newUser.setAdvertisementList(new ArrayList<>());
 
-                System.out.println(newUser.toString());
                 messageProducerService.sendUserMessage(newUser);
             }
 
@@ -55,7 +54,6 @@ public class UserServiceImpl implements UserService{
             e.printStackTrace();
         }
 
-        return jsonString;
 
     }
 

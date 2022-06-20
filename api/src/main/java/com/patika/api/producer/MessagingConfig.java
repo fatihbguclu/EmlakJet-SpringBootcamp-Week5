@@ -10,29 +10,31 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.amqp.support.converter.SimpleMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+
 public class MessagingConfig {
     @Value("${queue.name}")
-    private String message;
+    private String queueName;
 
     @Value("${spring.rabbitmq.template.exchange}")
-    private String exchangeName;
+    private String topicExchangeName;
 
     @Value("${spring.rabbitmq.template.routing-key}")
     private String routingName;
 
     @Bean
     public Queue queue() {
-        return new Queue(message, true);
+        return new Queue(queueName, false);
     }
 
     @Bean
     DirectExchange directExchange(){
-        return new DirectExchange(exchangeName);
+        return new DirectExchange(topicExchangeName);
     }
 
     @Bean
@@ -40,7 +42,7 @@ public class MessagingConfig {
         return BindingBuilder.bind(queue).to(directExchange).with(routingName);
     }
 
-    @Bean
+
     MessageConverter messageConverter() {
 
         return new Jackson2JsonMessageConverter();
@@ -49,7 +51,7 @@ public class MessagingConfig {
     @Bean
     RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setMessageConverter(messageConverter());
+        rabbitTemplate.setMessageConverter(new SimpleMessageConverter());
         return rabbitTemplate;
     }
 }

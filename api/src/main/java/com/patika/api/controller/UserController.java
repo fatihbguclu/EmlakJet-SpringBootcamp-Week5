@@ -3,8 +3,9 @@ package com.patika.api.controller;
 
 import com.patika.api.domain.SaleAdvertisement;
 import com.patika.api.domain.User;
-import com.patika.api.repository.UserRepository;
 import com.patika.api.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -32,9 +33,9 @@ public class UserController {
     }
 
     @GetMapping("/test")
-    public String createUser(){
-        User user = null;
-        return userService.createUser(user);
+    public ResponseEntity createUser(){
+        userService.createRandomUser();
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }
