@@ -15,6 +15,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "adverts")
 public class SaleAdvertisementDTO{
 
     @Id

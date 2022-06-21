@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 
-@Component
+
 public class DataLoader implements CommandLineRunner {
 
     UserRepository userRepository;

@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService{
 
-    public static final String API_URL = "https://random-data-api.com/api/users/random_user?size=10";
+    public static final String API_URL = "https://random-data-api.com/api/users/random_user?size=50";
     private final UserRepository userRepository;
     private final MessageProducerService messageProducerService;
     private final WebClient webClient;
