@@ -4,9 +4,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,7 +20,7 @@ public class SaleAdvertisement implements Serializable {
     private static final long serialVersionUID = -5483390214395653823L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String title;
@@ -26,6 +28,9 @@ public class SaleAdvertisement implements Serializable {
     private String details;
     private String price;
     private String graphPath;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
