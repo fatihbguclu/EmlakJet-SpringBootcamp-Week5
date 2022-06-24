@@ -14,8 +14,8 @@
     <artifactId>emlakjet</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>week3-assignment-fatihbuyukguclu</name>
-    <description>week3-assignment-fatihbuyukguclu</description>
+    <name>week5-assignment-fatihbuyukguclu</name>
+    <description>week5-assignment-fatihbuyukguclu</description>
 
     <properties>
         <java.version>11</java.version>
